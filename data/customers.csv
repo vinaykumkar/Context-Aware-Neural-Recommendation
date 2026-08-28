@@ -1,0 +1,51 @@
+customer_id,FN,Active,club_member_status,fashion_news_frequency,age,postal_code
+cust_0000_6796,1.0,,LEFT CLUB,Monthly,68,post_127
+cust_0001_5325,1.0,,,Regularly,47,post_109
+cust_0002_3301,,,PRE-CREATE,,,post_948
+cust_0003_6144,,1.0,ACTIVE,NONE,25,post_576
+cust_0004_8787,,,LEFT CLUB,,20,post_817
+cust_0005_8319,1.0,,,Regularly,68,post_599
+cust_0006_3713,,,LEFT CLUB,NONE,56,post_920
+cust_0007_4169,1.0,1.0,ACTIVE,Regularly,61,post_910
+cust_0008_5711,1.0,,,Monthly,60,post_573
+cust_0009_4247,,,LEFT CLUB,NONE,60,post_157
+cust_0010_1022,,1.0,ACTIVE,,46,post_803
+cust_0011_1730,,,,,55,post_822
+cust_0012_8732,,1.0,ACTIVE,NONE,,post_270
+cust_0013_9540,,,LEFT CLUB,,18,post_155
+cust_0014_7861,1.0,,,Monthly,36,post_780
+cust_0015_9620,,,PRE-CREATE,,37,post_900
+cust_0016_2137,1.0,,,Monthly,50,post_567
+cust_0017_6350,1.0,,LEFT CLUB,Monthly,56,post_347
+cust_0018_2445,1.0,,LEFT CLUB,Regularly,27,post_666
+cust_0019_2130,,,LEFT CLUB,,21,post_549
+cust_0020_9961,1.0,1.0,ACTIVE,Monthly,,post_674
+cust_0021_7200,,,PRE-CREATE,NONE,67,post_298
+cust_0022_2236,,,PRE-CREATE,,51,post_146
+cust_0023_7665,1.0,1.0,ACTIVE,Monthly,62,post_368
+cust_0024_2948,,,LEFT CLUB,,31,post_396
+cust_0025_6963,1.0,,LEFT CLUB,Regularly,68,post_274
+cust_0026_4409,,,PRE-CREATE,NONE,48,post_733
+cust_0027_3513,,,PRE-CREATE,,67,post_134
+cust_0028_3100,,,,NONE,62,post_690
+cust_0029_2592,,,,,55,post_894
+cust_0030_2645,1.0,1.0,ACTIVE,Regularly,18,post_611
+cust_0031_4968,,1.0,ACTIVE,NONE,40,post_245
+cust_0032_6636,,1.0,ACTIVE,,49,post_839
+cust_0033_1621,,,,NONE,67,post_467
+cust_0034_9710,1.0,1.0,ACTIVE,Regularly,54,post_105
+cust_0035_9840,1.0,,LEFT CLUB,Regularly,43,post_570
+cust_0036_1116,,1.0,ACTIVE,,50,post_184
+cust_0037_3229,1.0,,PRE-CREATE,Regularly,70,post_745
+cust_0038_1164,,1.0,ACTIVE,,21,post_273
+cust_0039_4938,1.0,,,Monthly,39,post_137
+cust_0040_6962,1.0,,LEFT CLUB,Regularly,21,post_967
+cust_0041_3626,,,PRE-CREATE,,27,post_201
+cust_0042_6157,1.0,,,Regularly,62,post_195
+cust_0043_4979,1.0,,,Monthly,47,post_230
+cust_0044_8812,,,LEFT CLUB,,66,post_390
+cust_0045_5779,,,,NONE,70,post_788
+cust_0046_8764,1.0,,,Regularly,61,post_750
+cust_0047_8832,1.0,1.0,ACTIVE,Regularly,28,post_452
+cust_0048_4464,,1.0,ACTIVE,NONE,42,post_903
+cust_0049_4988,1.0,,PRE-CREATE,Monthly,,post_260

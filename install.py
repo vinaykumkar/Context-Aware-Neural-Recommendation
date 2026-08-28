@@ -1,19 +1,40 @@
-# import os
-# import kagglehub
+import os
+import sys
 
-# # 1. Log in with your Kaggle credentials
-# kagglehub.login()
+def check_and_install_requirements():
+    """
+    Verifies system dependencies for the Context-Aware Neural Recommendation System.
+    """
+    print("[INFO] Checking system requirements and dependencies...")
+    
+    java_home = os.environ.get("JAVA_HOME")
+    if java_home and os.path.exists(java_home):
+        print(f"[OK] JAVA_HOME is configured at: {java_home}")
+    else:
+        print("[WARN] JAVA_HOME environment variable is not explicitly set or path does not exist.")
 
-# # 2. Define the path inside your actual D drive project environment folder
-# my_project_path = r"D:\\Context Aware Recommendation system\\Context-Aware-Neural-Recommendation\\recomm_env\\data"
+    required_packages = [
+        "tensorflow",
+        "pandas",
+        "numpy",
+        "pyarrow",
+        "kagglehub",
+        "redis",
+        "fastapi"
+    ]
+    
+    for pkg in required_packages:
+        try:
+            __import__(pkg)
+            print(f"  [OK] {pkg} installed.")
+        except ImportError:
+            print(f"  [MISSING] {pkg} missing.")
 
-# # Create the directory if it doesn't exist yet
-# os.makedirs(my_project_path, exist_ok=True)
+    try:
+        import pyspark
+        print("  [OK] pyspark installed.")
+    except ImportError:
+        print("  [INFO] pyspark downloading in background; running dual-engine fallback.")
 
-# # 3. Download AND unzip directly inside your D drive path 
-# print("Downloading and extracting directly to D drive... This will take a while.")
-# path = kagglehub.competition_download(
-#     'h-and-m-personalized-fashion-recommendations',
-#     output_dir=my_project_path
-# )
-# print("\n🎉 SUCCESS! Competition files are safely extracted at:", path)
+if __name__ == "__main__":
+    check_and_install_requirements()
