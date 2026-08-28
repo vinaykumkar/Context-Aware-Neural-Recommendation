@@ -1,0 +1,92 @@
+{
+  "embedding_dim": 64,
+  "id_embedding_dim": 8,
+  "cat_embedding_dim": 8,
+  "hidden_units": 128,
+  "temperature": 0.15,
+  "batch_size": 256,
+  "epochs_run": 9,
+  "seed": 42,
+  "user_categorical": [
+    "customer_id",
+    "club_member_status",
+    "fashion_news_frequency",
+    "sales_channel_id",
+    "purchase_month",
+    "purchase_day_of_week",
+    "fav_colour_group_name",
+    "fav_garment_group_name",
+    "fav_product_group_name"
+  ],
+  "user_numeric": [
+    "age",
+    "active",
+    "historical_purchase_count",
+    "historical_unique_articles",
+    "historical_total_spend",
+    "historical_average_price",
+    "historical_recency_days",
+    "historical_purchase_frequency",
+    "historical_recent_purchase_count_30d",
+    "has_history"
+  ],
+  "item_categorical": [
+    "article_id",
+    "product_type_name",
+    "product_group_name",
+    "colour_group_name",
+    "garment_group_name",
+    "index_name"
+  ],
+  "item_numeric": [],
+  "logq_correction": true,
+  "vocab_sizes": {
+    "customer_id": 5001,
+    "club_member_status": 4,
+    "fashion_news_frequency": 4,
+    "sales_channel_id": 3,
+    "purchase_month": 13,
+    "purchase_day_of_week": 8,
+    "fav_colour_group_name": 18,
+    "fav_garment_group_name": 13,
+    "fav_product_group_name": 9,
+    "article_id": 4669,
+    "product_type_name": 19,
+    "product_group_name": 8,
+    "colour_group_name": 17,
+    "garment_group_name": 12,
+    "index_name": 7
+  },
+  "numeric_stats": {
+    "mean": [
+      45.452056884765625,
+      0.5889798402786255,
+      4.885348320007324,
+      4.829151630401611,
+      0.50333172082901,
+      0.09145466238260269,
+      25.11060333251953,
+      0.05076637864112854,
+      0.9148441553115845,
+      0.8881881833076477
+    ],
+    "std": [
+      17.32232093811035,
+      0.4920189082622528,
+      3.7460451126098633,
+      3.680922746658325,
+      0.40525954961776733,
+      0.04411224275827408,
+      28.259620666503906,
+      0.08716641366481781,
+      0.9797781705856323,
+      0.31513479351997375
+    ]
+  },
+  "ann_engine": "faiss",
+  "train_rows": 44718,
+  "num_users": 5000,
+  "num_items": 4668,
+  "trained_at": "2026-08-28 19:50:04",
+  "training_seconds": 70.0
+}

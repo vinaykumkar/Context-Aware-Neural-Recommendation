@@ -1,0 +1,8 @@
+# StyleSense AI - dependencies (all used by the project)
+tensorflow
+pandas
+numpy
+streamlit
+faiss-cpu
+redis
+scikit-learn

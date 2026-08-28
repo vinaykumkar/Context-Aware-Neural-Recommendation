@@ -1,0 +1,27 @@
+{
+  "recall_at_5": 0.0738,
+  "recall_at_10": 0.14,
+  "recall_at_20": 0.2084,
+  "ndcg_at_5": 0.0446,
+  "ndcg_at_10": 0.0659,
+  "ndcg_at_20": 0.0831,
+  "validation": {
+    "recall_at_5": 0.0714,
+    "recall_at_10": 0.139,
+    "recall_at_20": 0.2056,
+    "ndcg_at_5": 0.0413,
+    "ndcg_at_10": 0.0632,
+    "ndcg_at_20": 0.0799,
+    "num_interactions_evaluated": 5000
+  },
+  "test": {
+    "recall_at_5": 0.0738,
+    "recall_at_10": 0.14,
+    "recall_at_20": 0.2084,
+    "ndcg_at_5": 0.0446,
+    "ndcg_at_10": 0.0659,
+    "ndcg_at_20": 0.0831,
+    "num_interactions_evaluated": 5000
+  },
+  "evaluated_on": "test split (per-user temporal, last interaction)"
+}

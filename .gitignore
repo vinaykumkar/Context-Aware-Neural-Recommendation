@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Environment / secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Extracted dataset - regenerated automatically from model_data_ready.zip
+data/model_data/
+
+# Temporary files
+*.log
+tmp/
