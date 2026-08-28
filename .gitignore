@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+recomm_env/
+.env
+
+# Raw datasets
+data/*.csv
+data/images/
+data/.complete/
+
+# Parquet files
+data/parquet/
+data/*.parquet
+data/*.zip
+
+# Generated files
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -7,18 +7,13 @@ import sys
 os.environ["HADOOP_HOME"] = r"C:\\hadoop-3.3.6"
 sys.path.append(r"C:\\hadoop-3.3.6\\bin")
 
-
-# Tell Spark exactly where the Windows Hadoop binaries live
-# os.environ["HADOOP_HOME"] = r"C:\\hadoop"
-# sys.path.append(r"C:\\hadoop-3.3.6\\bin")
-
 spark = SparkSession.builder \
     .appName("ImageProcessing") \
     .config("spark.driver.memory", "8g") \
     .config("spark.executor.memory", "8g") \
     .getOrCreate()
 # Load images from storage
-# Use the file:/// protocol and a raw string 'r' for Windows paths
+
 import os
 from pyspark.sql import SparkSession
 
@@ -31,6 +26,7 @@ for root, dirs, files in os.walk(image_folder):
         if file.lower().endswith(".jpg"):
             # Format cleanly for PySpark compatibility
             full_path = os.path.join(root, file).replace("\\", "/")
+            # Use the file:/// protocol and 'f' for Windows paths
             image_paths.append(f"file:///{full_path}")
 
 # 2. Feed the list directly into the lighter binary file system 
