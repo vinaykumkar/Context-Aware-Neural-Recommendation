@@ -20,3 +20,52 @@ Item Tower  (article ID + catalogue features)
 Item Embedding (64D, L2-normalized)
    ↓
 FAISS Index
+
+Tech Stack
+
+Python
+TensorFlow / Keras
+FAISS (faiss-cpu)
+Redis (optional, in-memory fallback built in)
+Pandas / NumPy
+Streamlit
+
+
+Project Structure
+
+├── app.py                    # Streamlit demo
+├── requirements.txt
+├── model_data_ready.zip      # prepared dataset (auto-extracted)
+├── src/
+│   ├── config.py             # paths and hyperparameters
+│   ├── data_loader.py        # zip extraction + split loading + affinity features
+│   ├── model.py              # two-tower model, in-batch softmax loss
+│   ├── train.py              # end-to-end training + artifact export
+│   ├── evaluate.py           # Recall@K / NDCG@K with FAISS retrieval
+│   ├── faiss_index.py        # FAISS index wrapper (sklearn fallback)
+│   ├── recommender.py        # RecommendationEngine serving flow
+│   ├── cache.py              # Redis cache / in-memory fallback
+│   └── utils.py              # seeds, vocabularies, JSON helpers
+├── artifacts/                # trained model, embeddings, FAISS index, metrics
+└── scripts/
+    └── verify_project.py     # end-to-end health check
+
+    
+Installation
+
+Windows PowerShell:
+
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+
+Train Model
+python -m src.train
+
+This extracts the dataset (if needed), trains the Two-Tower model, evaluates it, and writes everything required for serving into artifacts/.
+
+Training is NOT required every time - if artifacts/ is already present, the Streamlit app and the recommender load the saved model directly.
+
+Run Demo
+streamlit run app.py
+Then open the local URL shown by Streamlit (usually http://localhost:8501).
