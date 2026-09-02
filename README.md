@@ -69,30 +69,32 @@ A smart, data-driven recommendation engine that curates tailored outfit ideas, s
 
 Project Structure
 
-├── app.py                    # Streamlit demo
-├── requirements.txt
-├── model_data_ready.zip      # prepared dataset (auto-extracted)
-├── src/
-│   ├── config.py             # paths and hyperparameters
-│   ├── data_loader.py        # zip extraction + split loading + affinity features
-│   ├── model.py              # two-tower model, in-batch softmax loss
-│   ├── train.py              # end-to-end training + artifact export
-│   ├── evaluate.py           # Recall@K / NDCG@K with FAISS retrieval
-│   ├── faiss_index.py        # FAISS index wrapper (sklearn fallback)
-│   ├── recommender.py        # RecommendationEngine serving flow
-│   ├── cache.py              # Redis cache / in-memory fallback
-│   └── utils.py              # seeds, vocabularies, JSON helpers
-├── artifacts/                # trained model, embeddings, FAISS index, metrics
-└── scripts/
-    └── verify_project.py     # end-to-end health check
-
+    ├── app.py                    # Streamlit demo
+    ├── requirements.txt
+    ├── model_data_ready.zip      # prepared dataset (auto-extracted)
+    ├── src/
+    │   ├── config.py             # paths and hyperparameters
+    │   ├── data_loader.py        # zip extraction + split loading + affinity features
+    │   ├── model.py              # two-tower model, in-batch softmax loss
+    │   ├── train.py              # end-to-end training + artifact export
+    │   ├── evaluate.py           # Recall@K / NDCG@K with FAISS retrieval
+    │   ├── faiss_index.py        # FAISS index wrapper (sklearn fallback)
+    │   ├── recommender.py        # RecommendationEngine serving flow
+    │   ├── cache.py              # Redis cache / in-memory fallback
+    │   └── utils.py              # seeds, vocabularies, JSON helpers
+    ├── artifacts/                # trained model, embeddings, FAISS index, metrics
+    └── scripts/
+        └── verify_project.py     # end-to-end health check
     
+        
 Installation
 
 Windows PowerShell:
 
 python -m venv .venv
+
 .venv\Scripts\activate
+
 pip install -r requirements.txt
 
 Train Model
