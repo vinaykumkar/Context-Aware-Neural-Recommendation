@@ -3,69 +3,69 @@
 
 A smart, data-driven recommendation engine that curates tailored outfit ideas, seasonal staples, and style inspiration based on individual user preferences, browsing history, and real-time trends.
 
-Architecture
-                RAW DATA
-                   │
-       ┌───────────┼───────────┐
-       ▼           ▼           ▼
-   Customers    Articles   Transactions
-       │           │           │
-       └───────────┼───────────┘
-                   ▼
-            Data Cleaning
-                   │
-                   ▼
-          Missing Value Handling
-                   │
-                   ▼
-            Deduplication
-                   │
-                   ▼
-        Temporal Feature Creation
-                   │
-                   ▼
-       User Behavioral Features
-                   │
-                   ▼
-        Product Popularity Features
-                   │
-                   ▼
-       Context-Enriched Interactions
-                   │
-                   ▼
-          Categorical Encoding
-                   │
-             ┌─────┴─────┐
-             ▼           ▼
-        User Tower    Item Tower
-             │           │
-             ▼           ▼
-        User Vector   Item Vector
-             │           │
-             └─────┬─────┘
-                   ▼
-            Neural Training
-                   │
-                   ▼
-          64-D Embeddings
-                   │
-                   ▼
-             FAISS Index
-                   │
-                   ▼
-             User Request
-                   │
-                   ▼
-           User Embedding
-                   │
-                   ▼
-             FAISS Search
-                   │
-                   ▼
-             Top-K Items
-                   │
-                   ▼
-            Recommendation
+    Architecture
+                    RAW DATA
+                       │
+           ┌───────────┼───────────┐
+           ▼           ▼           ▼
+       Customers    Articles   Transactions
+           │           │           │
+           └───────────┼───────────┘
+                       ▼
+                Data Cleaning
+                       │
+                       ▼
+              Missing Value Handling
+                       │
+                       ▼
+                Deduplication
+                       │
+                       ▼
+            Temporal Feature Creation
+                       │
+                       ▼
+           User Behavioral Features
+                       │
+                       ▼
+            Product Popularity Features
+                       │
+                       ▼
+           Context-Enriched Interactions
+                       │
+                       ▼
+              Categorical Encoding
+                       │
+                 ┌─────┴─────┐
+                 ▼           ▼
+            User Tower    Item Tower
+                 │           │
+                 ▼           ▼
+            User Vector   Item Vector
+                 │           │
+                 └─────┬─────┘
+                       ▼
+                Neural Training
+                       │
+                       ▼
+              64-D Embeddings
+                       │
+                       ▼
+                 FAISS Index
+                       │
+                       ▼
+                 User Request
+                       │
+                       ▼
+               User Embedding
+                       │
+                       ▼
+                 FAISS Search
+                       │
+                       ▼
+                 Top-K Items
+                       │
+                       ▼
+                Recommendation
 
 Project Structure
 
