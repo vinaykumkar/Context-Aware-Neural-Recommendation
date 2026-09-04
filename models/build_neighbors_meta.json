@@ -1,0 +1,993 @@
+{
+  "built_at": "2026-08-30 13:59:38",
+  "half_life_days": 90.0,
+  "top_k": 150,
+  "min_cosine": 0.0,
+  "min_coweight": 0.02,
+  "stage_timings": [
+    {
+      "stage": "pairs bucket 00/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 01/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 02/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 03/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 04/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 05/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 06/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 07/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 08/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 09/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 10/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 11/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 12/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 13/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 14/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 15/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 16/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 17/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 18/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 19/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 20/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 21/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 22/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 23/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 24/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 25/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 26/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 27/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 28/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 29/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 30/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "pairs bucket 31/32 (cached)",
+      "seconds": 2.9
+    },
+    {
+      "stage": "weighted pairs: 27,306,439",
+      "seconds": 3.8
+    },
+    {
+      "stage": "user-item CSC built: (1371980, 105542), nnz=27,306,439",
+      "seconds": 5.0
+    },
+    {
+      "stage": "computing collaborative neighbors (blockwise)\u2026",
+      "seconds": 6.9
+    },
+    {
+      "stage": "neighbor block      0/105542 (cached)",
+      "seconds": 7.0
+    },
+    {
+      "stage": "neighbor block   1024/105542 (cached)",
+      "seconds": 7.1
+    },
+    {
+      "stage": "neighbor block   2048/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   3072/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   4096/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   5120/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   6144/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   7168/105542 (cached)",
+      "seconds": 7.2
+    },
+    {
+      "stage": "neighbor block   8192/105542 (cached)",
+      "seconds": 7.3
+    },
+    {
+      "stage": "neighbor block   9216/105542 (cached)",
+      "seconds": 7.3
+    },
+    {
+      "stage": "neighbor block  10240/105542 (cached)",
+      "seconds": 7.3
+    },
+    {
+      "stage": "neighbor block  11264/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  12288/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  13312/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  14336/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  15360/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  16384/105542 (cached)",
+      "seconds": 7.4
+    },
+    {
+      "stage": "neighbor block  17408/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  18432/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  19456/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  20480/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  21504/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  22528/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  23552/105542 (cached)",
+      "seconds": 7.5
+    },
+    {
+      "stage": "neighbor block  24576/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  25600/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  26624/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  27648/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  28672/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  29696/105542 (cached)",
+      "seconds": 7.6
+    },
+    {
+      "stage": "neighbor block  30720/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  31744/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  32768/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  33792/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  34816/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  35840/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  36864/105542 (cached)",
+      "seconds": 7.7
+    },
+    {
+      "stage": "neighbor block  37888/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  38912/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  39936/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  40960/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  41984/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  43008/105542 (cached)",
+      "seconds": 7.8
+    },
+    {
+      "stage": "neighbor block  44032/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  45056/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  46080/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  47104/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  48128/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  49152/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  50176/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  51200/105542 (cached)",
+      "seconds": 7.9
+    },
+    {
+      "stage": "neighbor block  52224/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  53248/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  54272/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  55296/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  56320/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  57344/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  58368/105542 (cached)",
+      "seconds": 8.0
+    },
+    {
+      "stage": "neighbor block  59392/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  60416/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  61440/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  62464/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  63488/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  64512/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  65536/105542 (cached)",
+      "seconds": 8.1
+    },
+    {
+      "stage": "neighbor block  66560/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  67584/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  68608/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  69632/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  70656/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  71680/105542 (cached)",
+      "seconds": 8.2
+    },
+    {
+      "stage": "neighbor block  72704/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  73728/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  74752/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  75776/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  76800/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  77824/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  78848/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  79872/105542 (cached)",
+      "seconds": 8.3
+    },
+    {
+      "stage": "neighbor block  80896/105542 (cached)",
+      "seconds": 8.4
+    },
+    {
+      "stage": "neighbor block  81920/105542 (cached)",
+      "seconds": 8.4
+    },
+    {
+      "stage": "neighbor block  82944/105542 (cached)",
+      "seconds": 8.4
+    },
+    {
+      "stage": "neighbor block  83968/105542 (cached)",
+      "seconds": 8.4
+    },
+    {
+      "stage": "neighbor block  84992/105542 (cached)",
+      "seconds": 8.4
+    },
+    {
+      "stage": "neighbor block  86016/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  87040/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  88064/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  89088/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  90112/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  91136/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  92160/105542 (cached)",
+      "seconds": 8.5
+    },
+    {
+      "stage": "neighbor block  93184/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  94208/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  95232/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  96256/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  97280/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  98304/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block  99328/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block 100352/105542 (cached)",
+      "seconds": 8.6
+    },
+    {
+      "stage": "neighbor block 101376/105542 (cached)",
+      "seconds": 8.7
+    },
+    {
+      "stage": "neighbor block 102400/105542 (cached)",
+      "seconds": 8.7
+    },
+    {
+      "stage": "neighbor block 103424/105542 (cached)",
+      "seconds": 8.7
+    },
+    {
+      "stage": "neighbor block 104448/105542 (cached)",
+      "seconds": 8.7
+    },
+    {
+      "stage": "neighbor block 105472/105542 (cached)",
+      "seconds": 8.7
+    },
+    {
+      "stage": "item_neighbors_collab.parquet written (14,622,870)",
+      "seconds": 11.3
+    },
+    {
+      "stage": "computing content neighbors (blockwise)\u2026",
+      "seconds": 11.5
+    },
+    {
+      "stage": "neighbor block      0/105542 (cached)",
+      "seconds": 11.6
+    },
+    {
+      "stage": "neighbor block   1024/105542 (cached)",
+      "seconds": 11.6
+    },
+    {
+      "stage": "neighbor block   2048/105542 (cached)",
+      "seconds": 11.6
+    },
+    {
+      "stage": "neighbor block   3072/105542 (cached)",
+      "seconds": 11.6
+    },
+    {
+      "stage": "neighbor block   4096/105542 (cached)",
+      "seconds": 11.6
+    },
+    {
+      "stage": "neighbor block   5120/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block   6144/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block   7168/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block   8192/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block   9216/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block  10240/105542 (cached)",
+      "seconds": 11.7
+    },
+    {
+      "stage": "neighbor block  11264/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  12288/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  13312/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  14336/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  15360/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  16384/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  17408/105542 (cached)",
+      "seconds": 11.8
+    },
+    {
+      "stage": "neighbor block  18432/105542",
+      "seconds": 14.1
+    },
+    {
+      "stage": "neighbor block  19456/105542",
+      "seconds": 16.4
+    },
+    {
+      "stage": "neighbor block  20480/105542",
+      "seconds": 18.7
+    },
+    {
+      "stage": "neighbor block  21504/105542",
+      "seconds": 21.1
+    },
+    {
+      "stage": "neighbor block  22528/105542",
+      "seconds": 23.4
+    },
+    {
+      "stage": "neighbor block  23552/105542",
+      "seconds": 25.7
+    },
+    {
+      "stage": "neighbor block  24576/105542",
+      "seconds": 28.3
+    },
+    {
+      "stage": "neighbor block  25600/105542",
+      "seconds": 30.6
+    },
+    {
+      "stage": "neighbor block  26624/105542",
+      "seconds": 32.9
+    },
+    {
+      "stage": "neighbor block  27648/105542",
+      "seconds": 35.2
+    },
+    {
+      "stage": "neighbor block  28672/105542",
+      "seconds": 37.5
+    },
+    {
+      "stage": "neighbor block  29696/105542",
+      "seconds": 39.8
+    },
+    {
+      "stage": "neighbor block  30720/105542",
+      "seconds": 42.2
+    },
+    {
+      "stage": "neighbor block  31744/105542",
+      "seconds": 44.5
+    },
+    {
+      "stage": "neighbor block  32768/105542",
+      "seconds": 46.9
+    },
+    {
+      "stage": "neighbor block  33792/105542",
+      "seconds": 49.2
+    },
+    {
+      "stage": "neighbor block  34816/105542",
+      "seconds": 51.5
+    },
+    {
+      "stage": "neighbor block  35840/105542",
+      "seconds": 53.9
+    },
+    {
+      "stage": "neighbor block  36864/105542",
+      "seconds": 56.2
+    },
+    {
+      "stage": "neighbor block  37888/105542",
+      "seconds": 58.4
+    },
+    {
+      "stage": "neighbor block  38912/105542",
+      "seconds": 60.7
+    },
+    {
+      "stage": "neighbor block  39936/105542",
+      "seconds": 63.1
+    },
+    {
+      "stage": "neighbor block  40960/105542",
+      "seconds": 65.4
+    },
+    {
+      "stage": "neighbor block  41984/105542",
+      "seconds": 67.8
+    },
+    {
+      "stage": "neighbor block  43008/105542",
+      "seconds": 70.2
+    },
+    {
+      "stage": "neighbor block  44032/105542",
+      "seconds": 72.5
+    },
+    {
+      "stage": "neighbor block  45056/105542",
+      "seconds": 74.8
+    },
+    {
+      "stage": "neighbor block  46080/105542",
+      "seconds": 77.1
+    },
+    {
+      "stage": "neighbor block  47104/105542",
+      "seconds": 79.4
+    },
+    {
+      "stage": "neighbor block  48128/105542",
+      "seconds": 81.7
+    },
+    {
+      "stage": "neighbor block  49152/105542",
+      "seconds": 84.1
+    },
+    {
+      "stage": "neighbor block  50176/105542",
+      "seconds": 86.4
+    },
+    {
+      "stage": "neighbor block  51200/105542",
+      "seconds": 88.7
+    },
+    {
+      "stage": "neighbor block  52224/105542",
+      "seconds": 91.0
+    },
+    {
+      "stage": "neighbor block  53248/105542",
+      "seconds": 93.3
+    },
+    {
+      "stage": "neighbor block  54272/105542",
+      "seconds": 95.6
+    },
+    {
+      "stage": "neighbor block  55296/105542",
+      "seconds": 98.0
+    },
+    {
+      "stage": "neighbor block  56320/105542",
+      "seconds": 100.4
+    },
+    {
+      "stage": "neighbor block  57344/105542",
+      "seconds": 102.7
+    },
+    {
+      "stage": "neighbor block  58368/105542",
+      "seconds": 104.9
+    },
+    {
+      "stage": "neighbor block  59392/105542",
+      "seconds": 107.3
+    },
+    {
+      "stage": "neighbor block  60416/105542",
+      "seconds": 109.6
+    },
+    {
+      "stage": "neighbor block  61440/105542",
+      "seconds": 112.0
+    },
+    {
+      "stage": "neighbor block  62464/105542",
+      "seconds": 114.3
+    },
+    {
+      "stage": "neighbor block  63488/105542",
+      "seconds": 116.7
+    },
+    {
+      "stage": "neighbor block  64512/105542",
+      "seconds": 119.0
+    },
+    {
+      "stage": "neighbor block  65536/105542",
+      "seconds": 121.2
+    },
+    {
+      "stage": "neighbor block  66560/105542",
+      "seconds": 123.6
+    },
+    {
+      "stage": "neighbor block  67584/105542",
+      "seconds": 126.0
+    },
+    {
+      "stage": "neighbor block  68608/105542",
+      "seconds": 128.3
+    },
+    {
+      "stage": "neighbor block  69632/105542",
+      "seconds": 130.6
+    },
+    {
+      "stage": "neighbor block  70656/105542",
+      "seconds": 133.0
+    },
+    {
+      "stage": "neighbor block  71680/105542",
+      "seconds": 135.3
+    },
+    {
+      "stage": "neighbor block  72704/105542",
+      "seconds": 137.7
+    },
+    {
+      "stage": "neighbor block  73728/105542",
+      "seconds": 140.1
+    },
+    {
+      "stage": "neighbor block  74752/105542",
+      "seconds": 142.3
+    },
+    {
+      "stage": "neighbor block  75776/105542",
+      "seconds": 144.6
+    },
+    {
+      "stage": "neighbor block  76800/105542",
+      "seconds": 147.0
+    },
+    {
+      "stage": "neighbor block  77824/105542",
+      "seconds": 149.3
+    },
+    {
+      "stage": "neighbor block  78848/105542",
+      "seconds": 151.6
+    },
+    {
+      "stage": "neighbor block  79872/105542",
+      "seconds": 153.9
+    },
+    {
+      "stage": "neighbor block  80896/105542",
+      "seconds": 156.2
+    },
+    {
+      "stage": "neighbor block  81920/105542",
+      "seconds": 158.6
+    },
+    {
+      "stage": "neighbor block  82944/105542",
+      "seconds": 160.8
+    },
+    {
+      "stage": "neighbor block  83968/105542",
+      "seconds": 163.2
+    },
+    {
+      "stage": "neighbor block  84992/105542",
+      "seconds": 165.6
+    },
+    {
+      "stage": "neighbor block  86016/105542",
+      "seconds": 167.9
+    },
+    {
+      "stage": "neighbor block  87040/105542",
+      "seconds": 170.3
+    },
+    {
+      "stage": "neighbor block  88064/105542",
+      "seconds": 172.7
+    },
+    {
+      "stage": "neighbor block  89088/105542",
+      "seconds": 175.0
+    },
+    {
+      "stage": "neighbor block  90112/105542",
+      "seconds": 177.4
+    },
+    {
+      "stage": "neighbor block  91136/105542",
+      "seconds": 179.8
+    },
+    {
+      "stage": "neighbor block  92160/105542",
+      "seconds": 182.1
+    },
+    {
+      "stage": "neighbor block  93184/105542",
+      "seconds": 184.5
+    },
+    {
+      "stage": "neighbor block  94208/105542",
+      "seconds": 186.7
+    },
+    {
+      "stage": "neighbor block  95232/105542",
+      "seconds": 189.1
+    },
+    {
+      "stage": "neighbor block  96256/105542",
+      "seconds": 191.4
+    },
+    {
+      "stage": "neighbor block  97280/105542",
+      "seconds": 193.8
+    },
+    {
+      "stage": "neighbor block  98304/105542",
+      "seconds": 196.1
+    },
+    {
+      "stage": "neighbor block  99328/105542",
+      "seconds": 198.4
+    },
+    {
+      "stage": "neighbor block 100352/105542",
+      "seconds": 200.8
+    },
+    {
+      "stage": "neighbor block 101376/105542",
+      "seconds": 203.2
+    },
+    {
+      "stage": "neighbor block 102400/105542",
+      "seconds": 205.6
+    },
+    {
+      "stage": "neighbor block 103424/105542",
+      "seconds": 208.0
+    },
+    {
+      "stage": "neighbor block 104448/105542",
+      "seconds": 210.4
+    },
+    {
+      "stage": "neighbor block 105472/105542",
+      "seconds": 210.7
+    },
+    {
+      "stage": "item_neighbors_content.parquet written (15,831,300)",
+      "seconds": 212.5
+    }
+  ]
+}

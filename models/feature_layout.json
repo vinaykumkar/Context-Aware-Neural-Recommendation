@@ -1,0 +1,44 @@
+{
+  "half_life_days": 90.0,
+  "top_k": 150,
+  "item_order": "article_id asc",
+  "dim": 572,
+  "features": {
+    "product_type_name_index": {
+      "offset": 0,
+      "cardinality": 131
+    },
+    "product_group_name_index": {
+      "offset": 131,
+      "cardinality": 19
+    },
+    "graphical_appearance_name_index": {
+      "offset": 150,
+      "cardinality": 30
+    },
+    "colour_group_name_index": {
+      "offset": 180,
+      "cardinality": 50
+    },
+    "department_name_index": {
+      "offset": 230,
+      "cardinality": 250
+    },
+    "index_name_index": {
+      "offset": 480,
+      "cardinality": 10
+    },
+    "index_group_name_index": {
+      "offset": 490,
+      "cardinality": 5
+    },
+    "section_name_index": {
+      "offset": 495,
+      "cardinality": 56
+    },
+    "garment_group_name_index": {
+      "offset": 551,
+      "cardinality": 21
+    }
+  }
+}

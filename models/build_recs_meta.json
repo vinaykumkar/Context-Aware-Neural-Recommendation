@@ -1,0 +1,657 @@
+{
+  "built_at": "2026-08-30 19:56:27",
+  "half_life_days": 90.0,
+  "candidate_limit": 50,
+  "pop_candidates": 60,
+  "neighbor_limit": 40,
+  "weights": {
+    "collab": 0.45,
+    "content": 0.25,
+    "popularity": 0.2,
+    "repurchase": 0.1
+  },
+  "customers_with_recs": 1362281,
+  "engine": "duckdb",
+  "stage_timings": [
+    {
+      "stage": "bucket 00: 844,838 purchased pairs / 42,267 customers",
+      "seconds": 15.6
+    },
+    {
+      "stage": "bucket 00: collab candidates 3,413,630",
+      "seconds": 16.9
+    },
+    {
+      "stage": "bucket 00: union candidates 6,602,206",
+      "seconds": 18.4
+    },
+    {
+      "stage": "bucket 00: preliminary candidates 4,065,077",
+      "seconds": 54.5
+    },
+    {
+      "stage": "bucket 00: wrote 2,113,350 recs for 42,267 customers",
+      "seconds": 79.9
+    },
+    {
+      "stage": "bucket 01: 850,002 purchased pairs / 42,901 customers",
+      "seconds": 18.1
+    },
+    {
+      "stage": "bucket 01: collab candidates 3,447,563",
+      "seconds": 19.8
+    },
+    {
+      "stage": "bucket 01: union candidates 6,677,003",
+      "seconds": 21.4
+    },
+    {
+      "stage": "bucket 01: preliminary candidates 4,123,565",
+      "seconds": 57.0
+    },
+    {
+      "stage": "bucket 01: wrote 2,145,050 recs for 42,901 customers",
+      "seconds": 72.8
+    },
+    {
+      "stage": "bucket 02: 851,949 purchased pairs / 42,271 customers",
+      "seconds": 16.4
+    },
+    {
+      "stage": "bucket 02: collab candidates 3,405,527",
+      "seconds": 17.8
+    },
+    {
+      "stage": "bucket 02: union candidates 6,600,449",
+      "seconds": 19.8
+    },
+    {
+      "stage": "bucket 02: preliminary candidates 4,063,560",
+      "seconds": 55.5
+    },
+    {
+      "stage": "bucket 02: wrote 2,113,550 recs for 42,271 customers",
+      "seconds": 70.0
+    },
+    {
+      "stage": "bucket 03: 850,862 purchased pairs / 42,761 customers",
+      "seconds": 19.5
+    },
+    {
+      "stage": "bucket 03: collab candidates 3,433,077",
+      "seconds": 21.6
+    },
+    {
+      "stage": "bucket 03: union candidates 6,655,470",
+      "seconds": 23.8
+    },
+    {
+      "stage": "bucket 03: preliminary candidates 4,108,290",
+      "seconds": 55.5
+    },
+    {
+      "stage": "bucket 03: wrote 2,138,050 recs for 42,761 customers",
+      "seconds": 71.4
+    },
+    {
+      "stage": "bucket 04: 844,257 purchased pairs / 42,450 customers",
+      "seconds": 18.4
+    },
+    {
+      "stage": "bucket 04: collab candidates 3,413,487",
+      "seconds": 20.4
+    },
+    {
+      "stage": "bucket 04: union candidates 6,612,807",
+      "seconds": 23.4
+    },
+    {
+      "stage": "bucket 04: preliminary candidates 4,080,260",
+      "seconds": 56.9
+    },
+    {
+      "stage": "bucket 04: wrote 2,122,500 recs for 42,450 customers",
+      "seconds": 81.7
+    },
+    {
+      "stage": "bucket 05: 858,134 purchased pairs / 42,073 customers",
+      "seconds": 19.4
+    },
+    {
+      "stage": "bucket 05: collab candidates 3,397,890",
+      "seconds": 22.2
+    },
+    {
+      "stage": "bucket 05: union candidates 6,587,716",
+      "seconds": 26.1
+    },
+    {
+      "stage": "bucket 05: preliminary candidates 4,044,847",
+      "seconds": 66.5
+    },
+    {
+      "stage": "bucket 05: wrote 2,103,650 recs for 42,073 customers",
+      "seconds": 93.4
+    },
+    {
+      "stage": "bucket 06: 862,164 purchased pairs / 42,726 customers",
+      "seconds": 23.4
+    },
+    {
+      "stage": "bucket 06: collab candidates 3,453,693",
+      "seconds": 26.5
+    },
+    {
+      "stage": "bucket 06: union candidates 6,683,359",
+      "seconds": 31.5
+    },
+    {
+      "stage": "bucket 06: preliminary candidates 4,109,281",
+      "seconds": 116.0
+    },
+    {
+      "stage": "bucket 06: wrote 2,136,300 recs for 42,726 customers",
+      "seconds": 159.9
+    },
+    {
+      "stage": "bucket 07: 854,688 purchased pairs / 42,614 customers",
+      "seconds": 19.9
+    },
+    {
+      "stage": "bucket 07: collab candidates 3,435,914",
+      "seconds": 23.0
+    },
+    {
+      "stage": "bucket 07: union candidates 6,652,106",
+      "seconds": 28.2
+    },
+    {
+      "stage": "bucket 07: preliminary candidates 4,098,549",
+      "seconds": 96.2
+    },
+    {
+      "stage": "bucket 07: wrote 2,130,700 recs for 42,614 customers",
+      "seconds": 127.4
+    },
+    {
+      "stage": "bucket 08: 850,819 purchased pairs / 42,688 customers",
+      "seconds": 20.8
+    },
+    {
+      "stage": "bucket 08: collab candidates 3,427,428",
+      "seconds": 24.1
+    },
+    {
+      "stage": "bucket 08: union candidates 6,646,688",
+      "seconds": 30.3
+    },
+    {
+      "stage": "bucket 08: preliminary candidates 4,101,648",
+      "seconds": 89.6
+    },
+    {
+      "stage": "bucket 08: wrote 2,134,400 recs for 42,688 customers",
+      "seconds": 123.1
+    },
+    {
+      "stage": "bucket 09: 849,138 purchased pairs / 42,627 customers",
+      "seconds": 17.6
+    },
+    {
+      "stage": "bucket 09: collab candidates 3,430,546",
+      "seconds": 20.8
+    },
+    {
+      "stage": "bucket 09: union candidates 6,644,175",
+      "seconds": 27.6
+    },
+    {
+      "stage": "bucket 09: preliminary candidates 4,095,802",
+      "seconds": 68.3
+    },
+    {
+      "stage": "bucket 09: wrote 2,131,350 recs for 42,627 customers",
+      "seconds": 99.7
+    },
+    {
+      "stage": "bucket 10: 847,044 purchased pairs / 42,638 customers",
+      "seconds": 15.9
+    },
+    {
+      "stage": "bucket 10: collab candidates 3,435,388",
+      "seconds": 19.4
+    },
+    {
+      "stage": "bucket 10: union candidates 6,646,233",
+      "seconds": 26.3
+    },
+    {
+      "stage": "bucket 10: preliminary candidates 4,099,706",
+      "seconds": 68.4
+    },
+    {
+      "stage": "bucket 10: wrote 2,131,900 recs for 42,638 customers",
+      "seconds": 104.5
+    },
+    {
+      "stage": "bucket 11: 834,256 purchased pairs / 42,595 customers",
+      "seconds": 17.2
+    },
+    {
+      "stage": "bucket 11: collab candidates 3,407,172",
+      "seconds": 20.8
+    },
+    {
+      "stage": "bucket 11: union candidates 6,605,038",
+      "seconds": 28.8
+    },
+    {
+      "stage": "bucket 11: preliminary candidates 4,090,868",
+      "seconds": 81.4
+    },
+    {
+      "stage": "bucket 11: wrote 2,129,750 recs for 42,595 customers",
+      "seconds": 116.7
+    },
+    {
+      "stage": "bucket 12: 872,382 purchased pairs / 42,623 customers",
+      "seconds": 16.8
+    },
+    {
+      "stage": "bucket 12: collab candidates 3,446,917",
+      "seconds": 20.9
+    },
+    {
+      "stage": "bucket 12: union candidates 6,680,745",
+      "seconds": 29.0
+    },
+    {
+      "stage": "bucket 12: preliminary candidates 4,098,144",
+      "seconds": 80.4
+    },
+    {
+      "stage": "bucket 12: wrote 2,131,150 recs for 42,623 customers",
+      "seconds": 118.6
+    },
+    {
+      "stage": "bucket 13: 861,421 purchased pairs / 42,715 customers",
+      "seconds": 17.7
+    },
+    {
+      "stage": "bucket 13: collab candidates 3,430,739",
+      "seconds": 21.8
+    },
+    {
+      "stage": "bucket 13: union candidates 6,660,346",
+      "seconds": 30.0
+    },
+    {
+      "stage": "bucket 13: preliminary candidates 4,104,074",
+      "seconds": 75.2
+    },
+    {
+      "stage": "bucket 13: wrote 2,135,750 recs for 42,715 customers",
+      "seconds": 109.7
+    },
+    {
+      "stage": "bucket 14: 850,756 purchased pairs / 42,753 customers",
+      "seconds": 22.1
+    },
+    {
+      "stage": "bucket 14: collab candidates 3,441,290",
+      "seconds": 26.5
+    },
+    {
+      "stage": "bucket 14: union candidates 6,662,388",
+      "seconds": 35.2
+    },
+    {
+      "stage": "bucket 14: preliminary candidates 4,107,008",
+      "seconds": 81.3
+    },
+    {
+      "stage": "bucket 14: wrote 2,137,650 recs for 42,753 customers",
+      "seconds": 117.4
+    },
+    {
+      "stage": "bucket 15: 861,467 purchased pairs / 42,475 customers",
+      "seconds": 16.6
+    },
+    {
+      "stage": "bucket 15: collab candidates 3,425,656",
+      "seconds": 21.2
+    },
+    {
+      "stage": "bucket 15: union candidates 6,640,951",
+      "seconds": 30.4
+    },
+    {
+      "stage": "bucket 15: preliminary candidates 4,081,792",
+      "seconds": 76.9
+    },
+    {
+      "stage": "bucket 15: wrote 2,123,750 recs for 42,475 customers",
+      "seconds": 117.9
+    },
+    {
+      "stage": "bucket 16: 826,546 purchased pairs / 42,367 customers",
+      "seconds": 16.0
+    },
+    {
+      "stage": "bucket 16: collab candidates 3,389,077",
+      "seconds": 20.7
+    },
+    {
+      "stage": "bucket 16: union candidates 6,566,997",
+      "seconds": 30.5
+    },
+    {
+      "stage": "bucket 16: preliminary candidates 4,068,583",
+      "seconds": 74.1
+    },
+    {
+      "stage": "bucket 16: wrote 2,118,350 recs for 42,367 customers",
+      "seconds": 114.0
+    },
+    {
+      "stage": "bucket 17: 861,221 purchased pairs / 42,822 customers",
+      "seconds": 18.3
+    },
+    {
+      "stage": "bucket 17: collab candidates 3,456,542",
+      "seconds": 22.9
+    },
+    {
+      "stage": "bucket 17: union candidates 6,691,003",
+      "seconds": 33.2
+    },
+    {
+      "stage": "bucket 17: preliminary candidates 4,117,755",
+      "seconds": 76.5
+    },
+    {
+      "stage": "bucket 17: wrote 2,141,100 recs for 42,822 customers",
+      "seconds": 117.7
+    },
+    {
+      "stage": "bucket 18: 865,448 purchased pairs / 42,759 customers",
+      "seconds": 17.9
+    },
+    {
+      "stage": "bucket 18: collab candidates 3,446,394",
+      "seconds": 22.6
+    },
+    {
+      "stage": "bucket 18: union candidates 6,682,322",
+      "seconds": 32.8
+    },
+    {
+      "stage": "bucket 18: preliminary candidates 4,110,545",
+      "seconds": 70.7
+    },
+    {
+      "stage": "bucket 18: wrote 2,137,950 recs for 42,759 customers",
+      "seconds": 112.0
+    },
+    {
+      "stage": "bucket 19: 862,226 purchased pairs / 42,483 customers",
+      "seconds": 18.1
+    },
+    {
+      "stage": "bucket 19: collab candidates 3,423,963",
+      "seconds": 22.9
+    },
+    {
+      "stage": "bucket 19: union candidates 6,640,548",
+      "seconds": 33.4
+    },
+    {
+      "stage": "bucket 19: preliminary candidates 4,084,632",
+      "seconds": 109.1
+    },
+    {
+      "stage": "bucket 19: wrote 2,124,150 recs for 42,483 customers",
+      "seconds": 166.8
+    },
+    {
+      "stage": "bucket 20: 854,817 purchased pairs / 42,725 customers",
+      "seconds": 40.0
+    },
+    {
+      "stage": "bucket 20: collab candidates 3,443,727",
+      "seconds": 50.3
+    },
+    {
+      "stage": "bucket 20: union candidates 6,668,230",
+      "seconds": 66.7
+    },
+    {
+      "stage": "bucket 20: preliminary candidates 4,105,789",
+      "seconds": 130.3
+    },
+    {
+      "stage": "bucket 20: wrote 2,136,250 recs for 42,725 customers",
+      "seconds": 198.1
+    },
+    {
+      "stage": "bucket 21: 852,997 purchased pairs / 42,631 customers",
+      "seconds": 20.6
+    },
+    {
+      "stage": "bucket 21: collab candidates 3,432,488",
+      "seconds": 28.6
+    },
+    {
+      "stage": "bucket 21: union candidates 6,648,537",
+      "seconds": 45.3
+    },
+    {
+      "stage": "bucket 21: preliminary candidates 4,098,805",
+      "seconds": 114.8
+    },
+    {
+      "stage": "bucket 21: wrote 2,131,550 recs for 42,631 customers",
+      "seconds": 182.7
+    },
+    {
+      "stage": "bucket 22: 838,776 purchased pairs / 42,238 customers",
+      "seconds": 17.8
+    },
+    {
+      "stage": "bucket 22: collab candidates 3,400,860",
+      "seconds": 25.7
+    },
+    {
+      "stage": "bucket 22: union candidates 6,581,656",
+      "seconds": 42.5
+    },
+    {
+      "stage": "bucket 22: preliminary candidates 4,058,785",
+      "seconds": 90.1
+    },
+    {
+      "stage": "bucket 22: wrote 2,111,900 recs for 42,238 customers",
+      "seconds": 158.1
+    },
+    {
+      "stage": "bucket 23: 854,924 purchased pairs / 42,622 customers",
+      "seconds": 18.8
+    },
+    {
+      "stage": "bucket 23: collab candidates 3,429,648",
+      "seconds": 26.7
+    },
+    {
+      "stage": "bucket 23: union candidates 6,645,738",
+      "seconds": 42.8
+    },
+    {
+      "stage": "bucket 23: preliminary candidates 4,096,031",
+      "seconds": 97.0
+    },
+    {
+      "stage": "bucket 23: wrote 2,131,100 recs for 42,622 customers",
+      "seconds": 162.9
+    },
+    {
+      "stage": "bucket 24: 852,939 purchased pairs / 42,356 customers",
+      "seconds": 18.3
+    },
+    {
+      "stage": "bucket 24: collab candidates 3,417,146",
+      "seconds": 26.2
+    },
+    {
+      "stage": "bucket 24: union candidates 6,618,249",
+      "seconds": 43.5
+    },
+    {
+      "stage": "bucket 24: preliminary candidates 4,072,550",
+      "seconds": 96.5
+    },
+    {
+      "stage": "bucket 24: wrote 2,117,800 recs for 42,356 customers",
+      "seconds": 164.7
+    },
+    {
+      "stage": "bucket 25: 853,802 purchased pairs / 42,539 customers",
+      "seconds": 16.9
+    },
+    {
+      "stage": "bucket 25: collab candidates 3,438,376",
+      "seconds": 24.8
+    },
+    {
+      "stage": "bucket 25: union candidates 6,649,396",
+      "seconds": 42.1
+    },
+    {
+      "stage": "bucket 25: preliminary candidates 4,090,887",
+      "seconds": 94.4
+    },
+    {
+      "stage": "bucket 25: wrote 2,126,950 recs for 42,539 customers",
+      "seconds": 168.5
+    },
+    {
+      "stage": "bucket 26: 855,034 purchased pairs / 42,284 customers",
+      "seconds": 17.5
+    },
+    {
+      "stage": "bucket 26: collab candidates 3,412,201",
+      "seconds": 25.5
+    },
+    {
+      "stage": "bucket 26: union candidates 6,610,883",
+      "seconds": 43.1
+    },
+    {
+      "stage": "bucket 26: preliminary candidates 4,064,926",
+      "seconds": 113.9
+    },
+    {
+      "stage": "bucket 26: wrote 2,114,200 recs for 42,284 customers",
+      "seconds": 185.3
+    },
+    {
+      "stage": "bucket 27: 858,531 purchased pairs / 42,701 customers",
+      "seconds": 17.7
+    },
+    {
+      "stage": "bucket 27: collab candidates 3,449,639",
+      "seconds": 26.4
+    },
+    {
+      "stage": "bucket 27: union candidates 6,674,087",
+      "seconds": 43.8
+    },
+    {
+      "stage": "bucket 27: preliminary candidates 4,106,186",
+      "seconds": 105.2
+    },
+    {
+      "stage": "bucket 27: wrote 2,135,050 recs for 42,701 customers",
+      "seconds": 174.8
+    },
+    {
+      "stage": "bucket 28: 854,416 purchased pairs / 42,718 customers",
+      "seconds": 22.6
+    },
+    {
+      "stage": "bucket 28: collab candidates 3,449,116",
+      "seconds": 30.8
+    },
+    {
+      "stage": "bucket 28: union candidates 6,671,104",
+      "seconds": 48.3
+    },
+    {
+      "stage": "bucket 28: preliminary candidates 4,105,924",
+      "seconds": 120.5
+    },
+    {
+      "stage": "bucket 28: wrote 2,135,900 recs for 42,718 customers",
+      "seconds": 189.8
+    },
+    {
+      "stage": "bucket 29: 856,473 purchased pairs / 42,912 customers",
+      "seconds": 18.4
+    },
+    {
+      "stage": "bucket 29: collab candidates 3,447,638",
+      "seconds": 26.6
+    },
+    {
+      "stage": "bucket 29: union candidates 6,684,299",
+      "seconds": 44.3
+    },
+    {
+      "stage": "bucket 29: preliminary candidates 4,123,279",
+      "seconds": 119.9
+    },
+    {
+      "stage": "bucket 29: wrote 2,145,600 recs for 42,912 customers",
+      "seconds": 191.0
+    },
+    {
+      "stage": "bucket 30: 861,238 purchased pairs / 42,490 customers",
+      "seconds": 21.5
+    },
+    {
+      "stage": "bucket 30: collab candidates 3,443,685",
+      "seconds": 29.7
+    },
+    {
+      "stage": "bucket 30: union candidates 6,659,718",
+      "seconds": 46.5
+    },
+    {
+      "stage": "bucket 30: preliminary candidates 4,086,814",
+      "seconds": 107.0
+    },
+    {
+      "stage": "bucket 30: wrote 2,124,500 recs for 42,490 customers",
+      "seconds": 176.3
+    },
+    {
+      "stage": "bucket 31: 852,874 purchased pairs / 42,457 customers",
+      "seconds": 16.8
+    },
+    {
+      "stage": "bucket 31: collab candidates 3,422,027",
+      "seconds": 25.0
+    },
+    {
+      "stage": "bucket 31: union candidates 6,629,607",
+      "seconds": 43.0
+    },
+    {
+      "stage": "bucket 31: preliminary candidates 4,080,799",
+      "seconds": 101.6
+    },
+    {
+      "stage": "bucket 31: wrote 2,122,850 recs for 42,457 customers",
+      "seconds": 171.2
+    }
+  ]
+}
