@@ -33,10 +33,14 @@ def list_customers(
     page_size: int = Query(24, ge=1, le=100),
     has_purchases: bool | None = Query(None),
     sort: str = Query("purchase_count", pattern="^(purchase_count|total_spent|recency|customer_id)$"),
+    age_min: int | None = Query(None, ge=10, le=120),
+    age_max: int | None = Query(None, ge=10, le=120),
     con=Depends(db),
 ) -> CustomerListResponse:
     try:
-        return customer_service.search_customers(con, q, page, page_size, has_purchases, sort)
+        return customer_service.search_customers(
+            con, q, page, page_size, has_purchases, sort, age_min, age_max
+        )
     except StoreNotReady as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
 

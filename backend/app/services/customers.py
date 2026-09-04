@@ -53,6 +53,8 @@ def search_customers(
     page_size: int,
     has_purchases: bool | None,
     sort: str,
+    age_min: int | None = None,
+    age_max: int | None = None,
 ) -> CustomerListResponse:
     require(customers=True)
     where = ["TRUE"]
@@ -65,6 +67,12 @@ def search_customers(
         where.append("COALESCE(has_purchases, purchase_count > 0)")
     elif has_purchases is False:
         where.append("NOT COALESCE(has_purchases, purchase_count > 0)")
+    if age_min is not None:
+        where.append("age >= ?")
+        params.append(age_min)
+    if age_max is not None:
+        where.append("age <= ?")
+        params.append(age_max)
     order = SORT_COLUMNS.get(sort, SORT_COLUMNS["purchase_count"])
     w = " AND ".join(where)
 

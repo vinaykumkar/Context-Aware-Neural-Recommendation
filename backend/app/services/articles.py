@@ -143,3 +143,107 @@ def article_exists(article_id: int | str) -> bool:
         "SELECT COUNT(*) FROM articles_serving WHERE article_id = ?", [v]
     ).fetchone()
     return bool(n and n[0] > 0)
+
+
+def search_articles(
+    con: duckdb.DuckDBPyConnection,
+    q: str | None = None,
+    gender: str | None = None,
+    product_group: str | None = None,
+    age_group: str | None = None,
+    min_price: float | None = None,
+    max_price: float | None = None,
+    sort: str = "popularity",
+    page: int = 1,
+    page_size: int = 24,
+) -> dict:
+    require(articles=True)
+    where_clauses = ["COALESCE(a.purchase_count, 0) > 0"]
+    params: list = []
+
+    if q:
+        q_clean = q.strip().lower()
+        where_clauses.append(
+            """(
+                CAST(a.article_id AS VARCHAR) LIKE ?
+                OR LOWER(COALESCE(d.product_type_name, '')) LIKE ?
+                OR LOWER(COALESCE(d.product_group_name, '')) LIKE ?
+                OR LOWER(COALESCE(d.department_name, '')) LIKE ?
+                OR LOWER(COALESCE(d.index_group_name, '')) LIKE ?
+                OR LOWER(COALESCE(d.colour_group_name, '')) LIKE ?
+            )"""
+        )
+        pattern = f"%{q_clean}%"
+        params.extend([pattern] * 6)
+
+    if gender:
+        g_clean = gender.strip().lower()
+        where_clauses.append("LOWER(COALESCE(d.index_group_name, '')) = ?")
+        params.append(g_clean)
+
+    if product_group:
+        pg_clean = product_group.strip().lower()
+        where_clauses.append("LOWER(COALESCE(d.product_group_name, '')) = ?")
+        params.append(pg_clean)
+
+    if age_group:
+        ag = age_group.strip().lower()
+        if ag == "18-25":
+            where_clauses.append("(LOWER(COALESCE(d.index_group_name, '')) = 'divided' OR LOWER(COALESCE(d.section_name, '')) LIKE '%divided%' OR LOWER(COALESCE(d.department_name, '')) LIKE '%young%')")
+        elif ag == "26-35":
+            where_clauses.append("(LOWER(COALESCE(d.index_group_name, '')) IN ('ladieswear', 'menswear', 'divided', 'sport') AND LOWER(COALESCE(d.index_group_name, '')) != 'baby/children')")
+        elif ag in ("36-50", "51-100"):
+            where_clauses.append("(LOWER(COALESCE(d.index_group_name, '')) IN ('ladieswear', 'menswear') AND LOWER(COALESCE(d.index_group_name, '')) != 'baby/children')")
+        elif "baby" in ag or "child" in ag:
+            where_clauses.append("(LOWER(COALESCE(d.index_group_name, '')) = 'baby/children' OR LOWER(COALESCE(d.department_name, '')) LIKE '%baby%' OR LOWER(COALESCE(d.department_name, '')) LIKE '%kids%')")
+
+    if min_price is not None:
+        where_clauses.append("a.avg_price >= ?")
+        params.append(min_price)
+
+    if max_price is not None:
+        where_clauses.append("a.avg_price <= ?")
+        params.append(max_price)
+
+    where_sql = " AND ".join(where_clauses)
+
+    count_sql = f"""
+        SELECT COUNT(*)
+        FROM articles_serving a
+        LEFT JOIN articles_display d USING (article_id)
+        WHERE {where_sql}
+    """
+    total = con.execute(count_sql, params).fetchone()[0]
+
+    order_map = {
+        "popularity": "COALESCE(p.popularity_rank, 999999) ASC",
+        "price_asc": "COALESCE(a.avg_price, 999999) ASC",
+        "price_desc": "COALESCE(a.avg_price, 0) DESC",
+        "purchase_count": "COALESCE(a.purchase_count, 0) DESC",
+        "recency": "COALESCE(a.sales_last_28d, 0) DESC, COALESCE(a.purchase_count, 0) DESC",
+    }
+    order_by = order_map.get(sort, "COALESCE(p.popularity_rank, 999999) ASC")
+
+    offset = (page - 1) * page_size
+    query_sql = f"""
+        SELECT {SELECT_DISPLAY}
+        FROM articles_serving a
+        LEFT JOIN article_popularity p USING (article_id)
+        LEFT JOIN articles_display d USING (article_id)
+        WHERE {where_sql}
+        ORDER BY {order_by}
+        LIMIT {int(page_size)} OFFSET {int(offset)}
+    """
+    rows = con.execute(query_sql, params).fetchdf().to_dict(orient="records")
+    items = [article_row_to_dict(r) for r in rows]
+
+    import math
+    pages = max(1, math.ceil(total / page_size)) if total > 0 else 1
+
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "page_size": page_size,
+        "pages": pages,
+    }

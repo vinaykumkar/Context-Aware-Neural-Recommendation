@@ -8,10 +8,43 @@ from fastapi import APIRouter, HTTPException, Query
 from ..core.config import get_settings
 from ..core.article_id import format_article_id, parse_article_id
 from ..core.store import StoreNotReady, connection, require
-from ..schemas import Article, ArticleResponse, SimilarArticle
-from ..services.articles import article_exists, article_row_to_dict, get_articles_by_ids
+from ..schemas import Article, ArticleListResponse, ArticleResponse, SimilarArticle
+from ..services.articles import article_exists, article_row_to_dict, get_articles_by_ids, search_articles
 
 router = APIRouter(prefix="/api/articles", tags=["articles"])
+
+
+@router.get("", response_model=ArticleListResponse)
+def list_articles(
+    q: str | None = Query(None, description="Search keyword in article description, type, category, colour"),
+    gender: str | None = Query(None, description="Filter by gender/department (Ladieswear, Menswear, Divided, etc.)"),
+    product_group: str | None = Query(None, description="Filter by product group (Garment Upper body, etc.)"),
+    age_group: str | None = Query(None, description="Filter by demographic age group (18-25, 26-35, 36-50, 51-100)"),
+    min_price: float | None = Query(None, ge=0),
+    max_price: float | None = Query(None, ge=0),
+    sort: str = Query("popularity", pattern="^(popularity|price_asc|price_desc|purchase_count|recency)$"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(24, ge=1, le=100),
+) -> ArticleListResponse:
+    """Catalog search and filter endpoint."""
+    try:
+        require(articles=True)
+    except StoreNotReady as e:
+        raise HTTPException(status_code=503, detail=str(e)) from e
+    con = connection()
+    result = search_articles(
+        con=con,
+        q=q,
+        gender=gender,
+        product_group=product_group,
+        age_group=age_group,
+        min_price=min_price,
+        max_price=max_price,
+        sort=sort,
+        page=page,
+        page_size=page_size,
+    )
+    return ArticleListResponse(**result)
 
 
 @router.get("/popular", response_model=list[Article])

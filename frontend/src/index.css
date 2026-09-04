@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+  --color-veloura-sage: #8b9e7a;
+  --color-veloura-olive: #6d805c;
+  --color-veloura-sand: #f5f4ec;
+  --color-veloura-ecru: #fcfbf8;
+  --color-veloura-charcoal: #111111;
+  --color-veloura-muted: #767676;
+  --color-veloura-dark: #0d0e14;
+  --color-veloura-dark-card: #141620;
+  --color-veloura-dark-border: #232738;
+
   --color-ink-950: #06070d;
   --color-ink-900: #0a0c16;
   --color-ink-850: #0e1120;
@@ -8,27 +20,27 @@
   --color-ink-700: #1a2039;
   --color-ink-600: #232a48;
 
-  --color-ivory: #f0ede4;
-  --color-mist: #a5a3b4;
-  --color-faint: #6d6b80;
+  --color-ivory: #fbfaf7;
+  --color-mist: #6b7280;
+  --color-faint: #9ca3af;
 
   --color-iris-300: #b3a7ff;
   --color-iris-400: #9884ff;
-  --color-iris-500: #7c6cff;
-  --color-iris-600: #6350e8;
+  --color-iris-500: #8b9e7a;
+  --color-iris-600: #768866;
 
   --color-magenta-400: #ef7fdd;
-  --color-magenta-500: #e44fcb;
+  --color-magenta-500: #d97706;
 
   --color-azure-400: #74b9ff;
-  --color-azure-500: #4ea8ff;
+  --color-azure-500: #3b82f6;
 
   --color-champagne-300: #e8d3ac;
   --color-champagne-400: #d9b98a;
 
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-grotesk: "Space Grotesk", ui-monospace, monospace;
+  --font-display: "Fraunces", "Playfair Display", "Georgia", serif;
+  --font-sans: "Inter", "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: "Space Grotesk", "Inter", ui-monospace, monospace;
 
   --animate-shimmer: shimmer 2.2s linear infinite;
   --animate-float: float 9s ease-in-out infinite;
@@ -50,15 +62,30 @@
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Base body styles for Light mode (default) */
 body {
-  @apply bg-ink-950 text-ivory font-sans antialiased;
+  background-color: #fbfaf7;
+  color: #111111;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
   background-image:
-    radial-gradient(1100px 520px at 85% -10%, rgba(124, 108, 255, 0.13), transparent 60%),
-    radial-gradient(900px 500px at -10% 20%, rgba(228, 79, 203, 0.07), transparent 55%),
-    radial-gradient(1000px 700px at 50% 110%, rgba(78, 168, 255, 0.06), transparent 60%);
+    radial-gradient(1100px 520px at 85% -10%, rgba(139, 158, 122, 0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(217, 185, 138, 0.06), transparent 55%),
+    radial-gradient(1000px 700px at 50% 110%, rgba(139, 158, 122, 0.05), transparent 60%);
   background-attachment: fixed;
+}
+
+/* Dark mode body */
+html.dark body {
+  background-color: #0c0d12;
+  color: #f3f2ee;
+  background-image:
+    radial-gradient(1100px 520px at 85% -10%, rgba(139, 158, 122, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(139, 122, 190, 0.08), transparent 55%),
+    radial-gradient(1000px 700px at 50% 110%, rgba(80, 110, 140, 0.06), transparent 60%);
 }
 
 /* film grain overlay */
@@ -68,53 +95,74 @@ body {
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .micro-label {
-  @apply font-grotesk text-[11px] uppercase tracking-[0.28em] text-faint;
+  @apply font-grotesk text-[11px] uppercase tracking-[0.28em] text-neutral-500 dark:text-neutral-400 font-medium;
 }
 
+/* Panel styling */
 .panel {
-  @apply rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.045] to-white/[0.015];
-  backdrop-filter: blur(6px);
+  @apply rounded-2xl border border-neutral-200/80 bg-white/80 shadow-xs dark:border-white/[0.08] dark:bg-white/[0.035];
+  backdrop-filter: blur(10px);
 }
 
 .panel-hover {
-  @apply transition-all duration-300 hover:border-iris-500/40 hover:from-white/[0.07] hover:to-white/[0.02];
+  @apply transition-all duration-300 hover:border-[#8b9e7a]/60 hover:shadow-md dark:hover:border-[#8b9e7a]/50 dark:hover:bg-white/[0.05];
 }
 
 .display-xl {
-  @apply font-display font-light leading-[0.95] tracking-tight;
+  @apply font-display font-light leading-[1.02] tracking-tight;
   font-variation-settings: "opsz" 144;
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #f0ede4 10%, #b3a7ff 45%, #ef7fdd 75%, #74b9ff 100%);
+  background: linear-gradient(115deg, #111111 0%, #5d6e4f 45%, #8b9e7a 80%, #3f4e34 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+html.dark .text-gradient {
+  background: linear-gradient(100deg, #fbfaf7 10%, #c4d7b5 45%, #8b9e7a 75%, #a8c596 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .skeleton {
-  @apply rounded-lg bg-gradient-to-r from-white/[0.05] via-white/[0.12] to-white/[0.05];
+  @apply rounded-lg bg-gradient-to-r from-black/[0.04] via-black/[0.08] to-black/[0.04] dark:from-white/[0.05] dark:via-white/[0.12] dark:to-white/[0.05];
   background-size: 200% 100%;
   animation: var(--animate-shimmer);
 }
 
 .hairline {
-  @apply border-white/[0.08];
+  @apply border-neutral-200/80 dark:border-white/[0.08];
 }
 
 ::selection {
-  background: rgba(124, 108, 255, 0.35);
+  background: rgba(139, 158, 122, 0.3);
 }
 
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #0a0c16; }
-::-webkit-scrollbar-thumb { background: #232a48; border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: #2e3757; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f0eee7; }
+html.dark ::-webkit-scrollbar-track { background: #0c0d12; }
+::-webkit-scrollbar-thumb { background: #c5c2b8; border-radius: 6px; }
+html.dark ::-webkit-scrollbar-thumb { background: #232738; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #8b9e7a; }
+
+/* Veloura Editorial typography helpers */
+.veloura-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.veloura-badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-grotesk text-[10px] uppercase tracking-wider font-medium;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

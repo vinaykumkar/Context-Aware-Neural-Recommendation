@@ -108,6 +108,14 @@ export interface CustomerListResponse {
   pages: number
 }
 
+export interface ArticleListResponse {
+  items: Article[]
+  total: number
+  page: number
+  page_size: number
+  pages: number
+}
+
 export interface CategoryAffinity {
   feature: string
   code: number
@@ -148,20 +156,17 @@ export interface DatasetStats {
   n_active_customers: number
   n_purchased_articles: number
   n_articles: number
+  n_customers: number
+  min_age: number | null
+  max_age: number | null
+  avg_age: number | null
 }
 
 export interface StatsResponse {
   status: string
   dataset: DatasetStats
-  serving: Record<string, unknown> & { serving_data_mb?: number; recommendations_mb?: number; models_mb?: number }
-  model: {
-    algorithm: string
-    weights?: Record<string, number>
-    candidate_limit?: number
-    neighbor_limit?: number
-    half_life_days?: number
-    built_at?: string
-  }
+  serving: Record<string, unknown>
+  model: Record<string, unknown>
 }
 
 export class ApiError extends Error {
@@ -173,18 +178,13 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string): Promise<T> {
-  let res: Response
-  try {
-    res = await fetch(path)
-  } catch {
-    throw new ApiError(0, 'Backend unreachable — is the API server running on port 8000?')
-  }
+  const res = await fetch(path)
   if (!res.ok) {
     let detail = res.statusText
     try {
-      const body = await res.json()
-      if (body?.detail) detail = typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail)
-    } catch { /* keep statusText */ }
+      const data = await res.json()
+      if (data && data.detail) detail = data.detail
+    } catch {}
     throw new ApiError(res.status, detail)
   }
   return res.json() as Promise<T>
@@ -195,20 +195,53 @@ export const api = {
   config: () => request<AppConfig>('/api/config'),
   stats: () => request<StatsResponse>('/api/stats'),
   popularArticles: (limit = 12) => request<Article[]>(`/api/articles/popular?limit=${limit}`),
-  customers: (params: { q?: string; page?: number; page_size?: number; sort?: string; has_purchases?: boolean }) => {
+  articles: (params: {
+    q?: string
+    gender?: string
+    product_group?: string
+    age_group?: string
+    min_price?: number
+    max_price?: number
+    sort?: string
+    page?: number
+    page_size?: number
+  }) => {
+    const usp = new URLSearchParams()
+    if (params.q) usp.set('q', params.q)
+    if (params.gender) usp.set('gender', params.gender)
+    if (params.product_group) usp.set('product_group', params.product_group)
+    if (params.age_group) usp.set('age_group', params.age_group)
+    if (params.min_price !== undefined) usp.set('min_price', String(params.min_price))
+    if (params.max_price !== undefined) usp.set('max_price', String(params.max_price))
+    if (params.sort) usp.set('sort', params.sort)
+    if (params.page) usp.set('page', String(params.page))
+    if (params.page_size) usp.set('page_size', String(params.page_size))
+    return request<ArticleListResponse>(`/api/articles?${usp.toString()}`)
+  },
+  customers: (params: {
+    q?: string
+    page?: number
+    page_size?: number
+    sort?: string
+    has_purchases?: boolean
+    age_min?: number
+    age_max?: number
+  }) => {
     const usp = new URLSearchParams()
     if (params.q) usp.set('q', params.q)
     if (params.page) usp.set('page', String(params.page))
     if (params.page_size) usp.set('page_size', String(params.page_size))
     if (params.sort) usp.set('sort', params.sort)
     if (params.has_purchases !== undefined) usp.set('has_purchases', String(params.has_purchases))
+    if (params.age_min !== undefined) usp.set('age_min', String(params.age_min))
+    if (params.age_max !== undefined) usp.set('age_max', String(params.age_max))
     return request<CustomerListResponse>(`/api/customers?${usp.toString()}`)
   },
   customerProfile: (id: string) => request<CustomerProfileResponse>(`/api/customers/${id}`),
   customerHistory: (id: string, limit = 60) => request<HistoryResponse>(`/api/customers/${id}/history?limit=${limit}`),
   customerRecommendations: (id: string, count = 10) =>
     request<RecommendationResponse>(`/api/customers/${id}/recommendations?count=${count}`),
-  article: (id: number) => request<ArticleResponse>(`/api/articles/${id}`),
+  article: (id: number | string) => request<ArticleResponse>(`/api/articles/${id}`),
 }
 
 export function articleLabel(a: Article | null): string {

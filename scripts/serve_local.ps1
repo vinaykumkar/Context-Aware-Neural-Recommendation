@@ -22,7 +22,8 @@ function Stop-Matching([string]$pattern) {
 }
 
 Write-Output "=== stopping previous instances ==="
-Stop-Matching "uvicorn backend.app.main"
+Stop-Matching "backend.app.main"
+Stop-Matching "app.py"
 Stop-Matching "vite"
 
 Write-Output "=== starting backend  : http://localhost:8000 (docs: /docs) ==="
@@ -33,8 +34,8 @@ Start-Process -FilePath $pythonExe `
     -RedirectStandardError  (Join-Path $logs "backend.err.log")
 
 Write-Output "=== starting frontend : http://localhost:5173 ==="
-Start-Process -FilePath "cmd" `
-    -ArgumentList "/c","npx vite --host 0.0.0.0 --port 5173 > ..\logs\frontend.log 2>&1" `
+Start-Process -FilePath "cmd.exe" `
+    -ArgumentList "/c npm run dev -- --host 0.0.0.0 --port 5173 > ..\logs\frontend.log 2>&1" `
     -WorkingDirectory (Join-Path $root "frontend") -WindowStyle Hidden
 
 Start-Sleep -Seconds 2

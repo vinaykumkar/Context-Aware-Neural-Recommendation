@@ -41,6 +41,14 @@ class Article(BaseModel):
     index_name: str | None = None
 
 
+class ArticleListResponse(BaseModel):
+    items: list[Article]
+    total: int
+    page: int
+    page_size: int
+    pages: int
+
+
 class HistoryItem(BaseModel):
     article_id: str
     t_dat: str

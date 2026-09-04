@@ -14,6 +14,7 @@ VERSION = "1.0.0"
 
 
 @router.get("/health", response_model=HealthResponse)
+@router.get("/api/health", response_model=HealthResponse)
 def health() -> HealthResponse:
     s = get_settings()
     status = serving_status(s)
