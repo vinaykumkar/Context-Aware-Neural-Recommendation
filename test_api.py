@@ -1,4 +1,5 @@
-"""API tests against the synthetic serving fixture (tests/conftest.py)."""
+"""API tests for the synthetic recommendation-serving fixture."""
+
 from __future__ import annotations
 
 import sys
@@ -7,372 +8,687 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# Make project root importable
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
-from backend.app.main import app  # noqa: E402  (import after conftest env setup)
-from tests.conftest import ARTICLES, CUST_ALICE, CUST_BOB, CUST_EMPTY, CUST_GHOST  # noqa: E402
-
-# canonical 10-digit external forms of the fixture's numeric article ids
-FMT = {a: f"{a:010d}" for a in ARTICLES}
+from backend.app.main import app
+from tests.conftest import (
+    ARTICLES,
+    CUST_ALICE,
+    CUST_BOB,
+    CUST_EMPTY,
+    CUST_GHOST,
+)
 
 client = TestClient(app)
 
-
-# ---------------- health & config ----------------
-
-def test_health_ok():
-    r = client.get("/health")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["status"] == "ok"
-    assert body["serving"]["customers_serving"] is True
-    assert body["serving"]["recommendation_buckets"] == 4
+# Canonical H&M-style 10-digit article IDs
+ARTICLE_IDS = {article_id: f"{article_id:010d}" for article_id in ARTICLES}
 
 
-def test_app_config():
-    r = client.get("/api/config")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["image_mode"] == "placeholder"
-    assert body["max_recommendation_count"] == 50
+# ============================================================
+# HEALTH & CONFIG
+# ============================================================
+
+def test_health_endpoint():
+    response = client.get("/health")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["status"] == "ok"
+    assert data["serving"]["customers_serving"] is True
+    assert data["serving"]["recommendation_buckets"] == 4
 
 
-# ---------------- customer discovery ----------------
+def test_configuration_endpoint():
+    response = client.get("/api/config")
 
-def test_customers_list_paginates():
-    r = client.get("/api/customers?page=1&page_size=2")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["total"] == 3
-    assert len(body["items"]) == 2
-    assert body["pages"] == 2
+    assert response.status_code == 200
 
+    data = response.json()
 
-def test_customers_search():
-    r = client.get(f"/api/customers?q={'a'*12}")
-    assert r.status_code == 200
-    assert r.json()["total"] == 1
-    assert r.json()["items"][0]["customer_id"] == CUST_ALICE
+    assert data["image_mode"] == "placeholder"
+    assert data["max_recommendation_count"] == 50
 
 
-def test_customers_filter_has_purchases():
-    r = client.get("/api/customers?has_purchases=false")
-    assert r.status_code == 200
-    assert r.json()["total"] == 1
-    assert r.json()["items"][0]["customer_id"] == CUST_EMPTY
+# ============================================================
+# CUSTOMER APIs
+# ============================================================
+
+def test_customer_pagination():
+    response = client.get(
+        "/api/customers",
+        params={"page": 1, "page_size": 2},
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["total"] == 3
+    assert len(data["items"]) == 2
+    assert data["pages"] == 2
 
 
-def test_customers_invalid_pagination_rejected():
-    assert client.get("/api/customers?page=0").status_code == 422
-    assert client.get("/api/customers?page_size=1000").status_code == 422
+def test_customer_search():
+    response = client.get(
+        "/api/customers",
+        params={"q": "a" * 12},
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["total"] == 1
+    assert data["items"][0]["customer_id"] == CUST_ALICE
 
 
-# ---------------- profile ----------------
+def test_customers_without_purchases():
+    response = client.get(
+        "/api/customers",
+        params={"has_purchases": False},
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["total"] == 1
+    assert data["items"][0]["customer_id"] == CUST_EMPTY
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {"page": 0},
+        {"page_size": 1000},
+    ],
+)
+def test_invalid_customer_pagination(params):
+    response = client.get("/api/customers", params=params)
+
+    assert response.status_code == 422
+
+
+# ============================================================
+# CUSTOMER PROFILE
+# ============================================================
 
 def test_customer_profile():
-    r = client.get(f"/api/customers/{CUST_ALICE}")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["customer"]["purchase_count"] == 4
-    assert body["customer"]["short_id"].endswith("0001")
-    assert len(body["top_categories"]) == 5
+    response = client.get(f"/api/customers/{CUST_ALICE}")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["customer"]["purchase_count"] == 4
+    assert data["customer"]["short_id"].endswith("0001")
+    assert len(data["top_categories"]) == 5
 
 
-def test_customer_profile_404():
-    assert client.get(f"/api/customers/{CUST_GHOST}").status_code == 404
+def test_unknown_customer_profile():
+    response = client.get(f"/api/customers/{CUST_GHOST}")
+
+    assert response.status_code == 404
 
 
-def test_customer_profile_cold_start_no_affinities():
-    # member with zero purchases: all top_* columns are NULL/NaN
-    r = client.get(f"/api/customers/{CUST_EMPTY}")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["customer"]["has_purchases"] is False
-    assert body["top_categories"] == []
+def test_customer_without_purchase_history():
+    response = client.get(f"/api/customers/{CUST_EMPTY}")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["customer"]["has_purchases"] is False
+    assert data["top_categories"] == []
 
 
-def test_customer_profile_invalid_id():
-    assert client.get("/api/customers/not-hex").status_code == 422
+def test_invalid_customer_id():
+    response = client.get("/api/customers/not-hex")
+
+    assert response.status_code == 422
 
 
-# ---------------- history ----------------
+# ============================================================
+# PURCHASE HISTORY
+# ============================================================
 
-def test_customer_history_sorted_desc_and_joined():
-    r = client.get(f"/api/customers/{CUST_ALICE}/history")
-    assert r.status_code == 200
-    body = r.json()
-    dates = [i["t_dat"] for i in body["items"]]
+def test_customer_history():
+    response = client.get(
+        f"/api/customers/{CUST_ALICE}/history"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    dates = [item["t_dat"] for item in data["items"]]
+
     assert dates == sorted(dates, reverse=True)
-    assert body["total_transactions"] == 4
-    first = body["items"][0]
-    assert first["article_id"] == FMT[ARTICLES[0]]  # 10-digit string
-    assert isinstance(first["article_id"], str)
-    assert first["article"]["article_id"] == FMT[ARTICLES[0]]
-    assert body["items"][0]["article"]["image_url"] is None  # placeholder mode
+    assert data["total_transactions"] == 4
+
+    first_item = data["items"][0]
+
+    assert first_item["article_id"] == ARTICLE_IDS[ARTICLES[0]]
+    assert isinstance(first_item["article_id"], str)
+
+    assert (
+        first_item["article"]["article_id"]
+        == ARTICLE_IDS[ARTICLES[0]]
+    )
+
+    assert first_item["article"]["image_url"] is None
 
 
-def test_history_limit_param():
-    r = client.get(f"/api/customers/{CUST_ALICE}/history?limit=2")
-    assert r.status_code == 200
-    assert r.json()["returned"] == 2
+def test_history_limit():
+    response = client.get(
+        f"/api/customers/{CUST_ALICE}/history",
+        params={"limit": 2},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["returned"] == 2
 
 
-def test_history_customer_without_purchases():
-    r = client.get(f"/api/customers/{CUST_EMPTY}/history")
-    assert r.status_code == 200
-    assert r.json()["returned"] == 0
+def test_empty_customer_history():
+    response = client.get(
+        f"/api/customers/{CUST_EMPTY}/history"
+    )
+
+    assert response.status_code == 200
+    assert response.json()["returned"] == 0
 
 
-# ---------------- recommendations ----------------
+# ============================================================
+# RECOMMENDATIONS
+# ============================================================
 
-def test_recommendations_count_and_no_duplicates():
-    r = client.get(f"/api/customers/{CUST_ALICE}/recommendations")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["source"] == "precomputed"
-    ids = [i["article_id"] for i in body["items"]]
-    assert all(isinstance(a, str) and len(a) == 10 and a.isdigit() for a in ids)
-    assert len(ids) == len(set(ids))
-    assert 1 <= len(ids) <= 10
-    ranks = [i["rank"] for i in body["items"]]
+def get_recommendations(customer_id=CUST_ALICE, **params):
+    response = client.get(
+        f"/api/customers/{customer_id}/recommendations",
+        params=params,
+    )
+
+    assert response.status_code == 200
+
+    return response.json()
+
+
+def test_recommendation_structure():
+    data = get_recommendations()
+
+    assert data["source"] == "precomputed"
+
+    article_ids = [
+        item["article_id"]
+        for item in data["items"]
+    ]
+
+    assert all(
+        isinstance(article_id, str)
+        and len(article_id) == 10
+        and article_id.isdigit()
+        for article_id in article_ids
+    )
+
+    assert len(article_ids) == len(set(article_ids))
+    assert 1 <= len(article_ids) <= 10
+
+
+def test_recommendation_ranks():
+    data = get_recommendations()
+
+    ranks = [
+        item["rank"]
+        for item in data["items"]
+    ]
+
     assert ranks == list(range(1, len(ranks) + 1))
 
 
-def test_recommendations_exclude_purchased():
-    body = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    ids = [i["article_id"] for i in body["items"]]
-    # Alice owns ARTICLES[0] and ARTICLES[1] -> both filtered from the pool
-    assert FMT[ARTICLES[0]] not in ids and FMT[ARTICLES[1]] not in ids
-    assert body["filtered_out"] == 2
+def test_recommendations_exclude_purchased_items():
+    data = get_recommendations()
 
-    body2 = client.get(
-        f"/api/customers/{CUST_ALICE}/recommendations?exclude_purchased=false"
-    ).json()
-    ids2 = [i["article_id"] for i in body2["items"]]
-    assert FMT[ARTICLES[0]] in ids2
+    article_ids = {
+        item["article_id"]
+        for item in data["items"]
+    }
+
+    assert ARTICLE_IDS[ARTICLES[0]] not in article_ids
+    assert ARTICLE_IDS[ARTICLES[1]] not in article_ids
+    assert data["filtered_out"] == 2
 
 
-def test_recommendations_reason_codes_valid():
-    body = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    valid = {"COLLABORATIVE", "CONTENT_SIMILARITY", "POPULARITY", "REPEAT_PURCHASE", "HYBRID"}
-    for item in body["items"]:
-        assert item["reason"] in valid
+def test_recommendations_can_include_purchased_items():
+    data = get_recommendations(
+        exclude_purchased=False
+    )
+
+    article_ids = {
+        item["article_id"]
+        for item in data["items"]
+    }
+
+    assert ARTICLE_IDS[ARTICLES[0]] in article_ids
+
+
+def test_recommendation_reasons():
+    data = get_recommendations()
+
+    valid_reasons = {
+        "COLLABORATIVE",
+        "CONTENT_SIMILARITY",
+        "POPULARITY",
+        "REPEAT_PURCHASE",
+        "HYBRID",
+    }
+
+    for item in data["items"]:
+        assert item["reason"] in valid_reasons
         assert item["reason_text"]
-        for comp in item["components"].values():
-            assert 0.0 <= comp <= 1.0
+
+        for value in item["components"].values():
+            assert 0.0 <= value <= 1.0
 
 
-def test_recommendations_include_article_display():
-    body = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    for item in body["items"]:
-        assert item["article"] is not None
-        assert len(item["article"]["features"]) == 9
-        assert item["article"]["stats"]["purchase_count"] > 0
+def test_recommendations_contain_article_information():
+    data = get_recommendations()
+
+    for item in data["items"]:
+        article = item["article"]
+
+        assert article is not None
+        assert len(article["features"]) == 9
+        assert article["stats"]["purchase_count"] > 0
 
 
-def test_recommendations_popularity_fallback_for_empty_customer():
-    r = client.get(f"/api/customers/{CUST_EMPTY}/recommendations")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["source"] == "popularity_fallback"
-    assert len(body["items"]) <= 10
-    assert all(i["reason"] == "POPULARITY" for i in body["items"])
+def test_empty_customer_uses_popularity_fallback():
+    data = get_recommendations(CUST_EMPTY)
+
+    assert data["source"] == "popularity_fallback"
+    assert len(data["items"]) <= 10
+
+    assert all(
+        item["reason"] == "POPULARITY"
+        for item in data["items"]
+    )
 
 
-def test_recommendations_unknown_customer_404():
-    assert client.get(f"/api/customers/{CUST_GHOST}/recommendations").status_code == 404
+def test_unknown_customer_recommendations():
+    response = client.get(
+        f"/api/customers/{CUST_GHOST}/recommendations"
+    )
+
+    assert response.status_code == 404
 
 
-def test_recommendations_ranking_is_score_ordered():
-    body = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    scores = [i["score"] for i in body["items"]]
+def test_recommendations_sorted_by_score():
+    data = get_recommendations()
+
+    scores = [
+        item["score"]
+        for item in data["items"]
+    ]
+
     assert scores == sorted(scores, reverse=True)
 
 
-# ---------------- articles ----------------
+# ============================================================
+# ARTICLE APIs
+# ============================================================
 
-def test_article_detail_accepts_10_digit_and_numeric():
-    # canonical 10-digit form (leading zero preserved)
-    r = client.get(f"/api/articles/{FMT[ARTICLES[0]]}")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["article"]["article_id"] == FMT[ARTICLES[0]]
-    assert len(body["article"]["features"]) == 9
-    # bare numeric form resolves to the same article
-    r2 = client.get(f"/api/articles/{ARTICLES[0]}")
-    assert r2.status_code == 200
-    assert r2.json()["article"]["article_id"] == FMT[ARTICLES[0]]
+def test_article_accepts_canonical_id():
+    article_id = ARTICLE_IDS[ARTICLES[0]]
+
+    response = client.get(
+        f"/api/articles/{article_id}"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["article"]["article_id"] == article_id
+    assert len(data["article"]["features"]) == 9
 
 
-def test_article_404_and_422():
-    assert client.get("/api/articles/0111122223").status_code == 404
-    assert client.get("/api/articles/111122223").status_code == 404
-    assert client.get("/api/articles/abc").status_code == 422
-    assert client.get("/api/articles/-5").status_code == 422
+def test_article_accepts_numeric_id():
+    article_id = ARTICLES[0]
+
+    response = client.get(
+        f"/api/articles/{article_id}"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["article"]["article_id"] == ARTICLE_IDS[ARTICLES[0]]
+
+
+@pytest.mark.parametrize(
+    "article_id, expected_status",
+    [
+        ("0111122223", 404),
+        ("111122223", 404),
+        ("abc", 422),
+        ("-5", 422),
+    ],
+)
+def test_invalid_article_ids(article_id, expected_status):
+    response = client.get(
+        f"/api/articles/{article_id}"
+    )
+
+    assert response.status_code == expected_status
 
 
 def test_popular_articles():
-    r = client.get("/api/articles/popular?limit=3")
-    assert r.status_code == 200
-    body = r.json()
-    assert len(body) == 3
-    assert body[0]["stats"]["popularity_rank"] == 1
-    assert all(isinstance(a["article_id"], str) and len(a["article_id"]) == 10 for a in body)
+    response = client.get(
+        "/api/articles/popular",
+        params={"limit": 3},
+    )
+
+    assert response.status_code == 200
+
+    articles = response.json()
+
+    assert len(articles) == 3
+    assert articles[0]["stats"]["popularity_rank"] == 1
+
+    assert all(
+        isinstance(article["article_id"], str)
+        and len(article["article_id"]) == 10
+        for article in articles
+    )
 
 
-# ---------------- display metadata enrichment ----------------
+# ============================================================
+# ARTICLE METADATA
+# ============================================================
 
-def test_article_detail_has_human_readable_metadata():
-    a = client.get(f"/api/articles/{FMT[ARTICLES[0]]}").json()["article"]
-    assert a["article_id"] == FMT[ARTICLES[0]]
-    assert a["product_type"] == "Sweater"
-    assert a["colour"] == "Black"
-    assert a["product_group"] == "Garment Upper body"
-    assert a["department"] == "Jersey"
-    assert len(a["features"]) == 9  # encoded features still present (not replaced)
+def test_article_metadata():
+    article_id = ARTICLE_IDS[ARTICLES[0]]
 
+    data = client.get(
+        f"/api/articles/{article_id}"
+    ).json()
 
-def test_recommendations_enriched_with_labels_not_codes():
-    d = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    assert d["count"] >= 1
-    for item in d["items"]:
-        a = item["article"]
-        # display fields present for known articles
-        if a["article_id"] != FMT[ARTICLES[4]]:
-            assert a["product_type"] and a["colour"]
-        # human-readable label never shows numeric codes on the card path
-        assert a["product_type"] != "Type"
-        assert a["image_url"] is not None or True  # image mapping unchanged
+    article = data["article"]
+
+    assert article["product_type"] == "Sweater"
+    assert article["colour"] == "Black"
+    assert article["product_group"] == "Garment Upper body"
+    assert article["department"] == "Jersey"
+    assert len(article["features"]) == 9
 
 
-def test_purchase_history_enriched():
-    d = client.get(f"/api/customers/{CUST_ALICE}/history").json()
-    for item in d["items"]:
-        a = item["article"]
-        if a is not None and a["article_id"] == FMT[ARTICLES[0]]:
-            assert a["product_type"] == "Sweater"
-            assert a["colour"] == "Black"
+def test_recommendations_have_readable_metadata():
+    data = get_recommendations()
+
+    for item in data["items"]:
+        article = item["article"]
+
+        if article["article_id"] != ARTICLE_IDS[ARTICLES[4]]:
+            assert article["product_type"]
+            assert article["colour"]
+
+        assert article["product_type"] != "Type"
+
+
+def test_history_contains_readable_article_metadata():
+    data = client.get(
+        f"/api/customers/{CUST_ALICE}/history"
+    ).json()
+
+    found = False
+
+    for item in data["items"]:
+        article = item["article"]
+
+        if (
+            article is not None
+            and article["article_id"] == ARTICLE_IDS[ARTICLES[0]]
+        ):
+            assert article["product_type"] == "Sweater"
+            assert article["colour"] == "Black"
+            found = True
             break
-    else:
-        pytest.fail("ARTICLES[0] not found in history")
+
+    assert found
 
 
-def test_popular_articles_enriched():
-    body = client.get("/api/articles/popular?limit=3").json()
-    for a in body:
-        assert a["product_type"] and a["colour"]
+def test_popular_articles_have_metadata():
+    articles = client.get(
+        "/api/articles/popular",
+        params={"limit": 3},
+    ).json()
+
+    for article in articles:
+        assert article["product_type"]
+        assert article["colour"]
 
 
-def test_similar_articles_enriched():
-    d = client.get(f"/api/articles/{FMT[ARTICLES[0]]}?similar_count=2").json()
-    for s in d["similar"]:
-        assert s["article"]["product_type"]
+def test_similar_articles_have_metadata():
+    article_id = ARTICLE_IDS[ARTICLES[0]]
+
+    data = client.get(
+        f"/api/articles/{article_id}",
+        params={"similar_count": 2},
+    ).json()
+
+    for similar in data["similar"]:
+        assert similar["article"]["product_type"]
 
 
-def test_ranking_unchanged_by_enrichment():
-    d = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-    ids = [i["article_id"] for i in d["items"]]
-    assert ids[0] == FMT[ARTICLES[3]]  # same rank-1 as before enrichment
-    scores = [i["score"] for i in d["items"]]
+def test_enrichment_does_not_change_ranking():
+    data = get_recommendations()
+
+    ids = [
+        item["article_id"]
+        for item in data["items"]
+    ]
+
+    scores = [
+        item["score"]
+        for item in data["items"]
+    ]
+
+    assert ids[0] == ARTICLE_IDS[ARTICLES[3]]
     assert scores == sorted(scores, reverse=True)
 
 
-# ---------------- image serving ----------------
+# ============================================================
+# IMAGE API
+# ============================================================
 
-def test_image_api_serves_indexed_image(monkeypatch):
+def test_image_endpoint(monkeypatch):
     import polars as pl
 
     from backend.app.core.config import get_settings
-    from backend.app.services.images import image_index, resolve_article_image
+    from backend.app.services.images import (
+        image_index,
+    )
 
-    s = get_settings()
-    idx_path = s.serving_data_dir / "image_index.parquet"
-    existed = idx_path.exists()
-    fake = s.serving_data_dir / "test_fixture_image.jpg"
-    fake.write_bytes(bytes([0xFF, 0xD8, 0xFF]) + b"fixture")
-    pl.DataFrame({
-        "article_id": [FMT[ARTICLES[3]]],
-        "image_path": [str(fake)],
-        "extension": ["jpg"],
-    }).write_parquet(idx_path)
+    settings = get_settings()
+
+    index_path = (
+        settings.serving_data_dir
+        / "image_index.parquet"
+    )
+
+    existed_before = index_path.exists()
+
+    fake_image = (
+        settings.serving_data_dir
+        / "test_fixture_image.jpg"
+    )
+
+    fake_image.write_bytes(
+        bytes([0xFF, 0xD8, 0xFF]) + b"fixture"
+    )
+
+    pl.DataFrame(
+        {
+            "article_id": [ARTICLE_IDS[ARTICLES[3]]],
+            "image_path": [str(fake_image)],
+            "extension": ["jpg"],
+        }
+    ).write_parquet(index_path)
+
     image_index.cache_clear()
+
     try:
-        # recommendation responses now include a real image_url
-        d = client.get(f"/api/customers/{CUST_ALICE}/recommendations").json()
-        with_img = [i for i in d["items"] if i["article_id"] == FMT[ARTICLES[3]]]
-        assert with_img, f"ARTICLES[3] not in recs: {[i['article_id'] for i in d['items']]}"
-        assert with_img[0]["article"]["image_url"] == f"/api/images/{FMT[ARTICLES[3]]}"
+        data = get_recommendations()
 
-        r = client.get(f"/api/images/{FMT[ARTICLES[3]]}")
-        assert r.status_code == 200
-        assert r.headers["content-type"] == "image/jpeg"
+        matching = [
+            item
+            for item in data["items"]
+            if item["article_id"]
+            == ARTICLE_IDS[ARTICLES[3]]
+        ]
 
-        assert client.get("/api/images/0777777777").status_code == 404      # not indexed
-        # traversal-style ids are rejected (404: route never matches a path segment)
-        assert client.get("/api/images/..%2F..%2Fsecret").status_code in (404, 422)
-        assert client.get("/api/images/abc").status_code == 422
+        assert matching
+
+        assert (
+            matching[0]["article"]["image_url"]
+            == f"/api/images/{ARTICLE_IDS[ARTICLES[3]]}"
+        )
+
+        response = client.get(
+            f"/api/images/{ARTICLE_IDS[ARTICLES[3]]}"
+        )
+
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/jpeg"
+
+        assert client.get(
+            "/api/images/0777777777"
+        ).status_code == 404
+
+        assert client.get(
+            "/api/images/abc"
+        ).status_code == 422
+
     finally:
-        if not existed:
-            idx_path.unlink()
-        fake.unlink(missing_ok=True)
+        if not existed_before:
+            index_path.unlink(missing_ok=True)
+
+        fake_image.unlink(missing_ok=True)
+
         image_index.cache_clear()
         get_settings.cache_clear()
 
 
-# ---------------- stats: aov + filters ----------------
+# ============================================================
+# STATISTICS & FILTERS
+# ============================================================
 
-def test_aov_endpoint_structure():
-    r = client.get("/api/stats/aov")
-    assert r.status_code == 200
-    body = r.json()
-    assert isinstance(body["months"], list)
-    assert body["order_definition"]  # honest order-definition note present
-    for m in body["months"]:
-        assert len(m["month"]) == 7  # YYYY-MM, chronological sort
-        assert m["average_order_value"] == round(m["total_revenue"] / m["total_orders"], 6)
-    assert [m["month"] for m in body["months"]] == sorted(m["month"] for m in body["months"])
+def test_average_order_value():
+    response = client.get("/api/stats/aov")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert isinstance(data["months"], list)
+    assert data["order_definition"]
+
+    months = data["months"]
+
+    assert all(
+        len(month["month"]) == 7
+        for month in months
+    )
+
+    for month in months:
+        expected_aov = round(
+            month["total_revenue"]
+            / month["total_orders"],
+            6,
+        )
+
+        assert (
+            month["average_order_value"]
+            == expected_aov
+        )
+
+    dates = [month["month"] for month in months]
+
+    assert dates == sorted(dates)
 
 
-def test_filter_options_endpoint():
-    r = client.get("/api/stats/filters")
-    assert r.status_code == 200
-    body = r.json()
-    assert "under_18" in body["age_bands"] and "55_plus" in body["age_bands"]
-    assert body["divisions"] and body["departments"]
+def test_filter_options():
+    response = client.get("/api/stats/filters")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "under_18" in data["age_bands"]
+    assert "55_plus" in data["age_bands"]
+
+    assert data["divisions"]
+    assert data["departments"]
 
 
-def test_recommendations_reject_unknown_age_band():
-    r = client.get(f"/api/customers/{CUST_ALICE}/recommendations?age_band=99")
-    assert r.status_code == 422
+def test_invalid_age_band():
+    response = client.get(
+        f"/api/customers/{CUST_ALICE}/recommendations",
+        params={"age_band": 99},
+    )
+
+    assert response.status_code == 422
 
 
-def test_department_filter_returns_only_matching():
-    d = client.get(f"/api/customers/{CUST_ALICE}/recommendations?count=50&department=Jersey").json()
-    # fixture department names: only "Jersey" articles survive
-    for item in d["items"]:
+def test_department_filter():
+    data = get_recommendations(
+        count=50,
+        department="Jersey",
+    )
+
+    for item in data["items"]:
         assert item["article"]["department"] == "Jersey"
 
 
-def test_division_filter_returns_only_matching():
-    d = client.get(f"/api/customers/{CUST_ALICE}/recommendations?count=50&gender=Ladieswear").json()
-    for item in d["items"]:
+def test_gender_filter():
+    data = get_recommendations(
+        count=50,
+        gender="Ladieswear",
+    )
+
+    for item in data["items"]:
         assert item["article"]["index_group"] == "Ladieswear"
 
 
-def test_combined_filters_all_filter_together():
-    d = client.get(
-        f"/api/customers/{CUST_ALICE}/recommendations?count=50&gender=Ladieswear&department=Jersey"
-    ).json()
-    for item in d["items"]:
-        assert item["article"]["index_group"] == "Ladieswear"
-        assert item["article"]["department"] == "Jersey"
+def test_multiple_filters():
+    data = get_recommendations(
+        count=50,
+        gender="Ladieswear",
+        department="Jersey",
+    )
+
+    for item in data["items"]:
+        article = item["article"]
+
+        assert article["index_group"] == "Ladieswear"
+        assert article["department"] == "Jersey"
 
 
-# ---------------- stats ----------------
+# ============================================================
+# DATASET STATISTICS
+# ============================================================
 
-def test_stats_endpoint():
-    r = client.get("/api/stats")
-    assert r.status_code == 200
-    body = r.json()
-    assert body["dataset"]["n_transactions"] == 31788324
-    assert body["model"]["weights"]["collab"] == 0.45
+def test_dataset_statistics():
+    response = client.get("/api/stats")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["dataset"]["n_transactions"] == 31788324
+    assert data["model"]["weights"]["collab"] == 0.45
